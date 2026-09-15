@@ -1,0 +1,30 @@
+services:
+  db:
+    image: mysql:8.4
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: bibliothek
+      MYSQL_USER: biblio_user
+      MYSQL_PASSWORD: changeme
+    volumes:
+      - bibliothek-data:/var/lib/mysql
+      - ./bibliothek/sql/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-prootpass"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  app:
+    build:
+      context: ./bibliothek
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_URL: jdbc:mysql://db:3306/bibliothek?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC
+      DB_USER: biblio_user
+      DB_PASSWORD: changeme
+
+volumes:
+  bibliothek-data:

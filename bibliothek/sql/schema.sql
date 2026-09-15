@@ -62,3 +62,10 @@ INSERT INTO buch (titel, autor, isbn, verfuegbar) VALUES
     ('Clean Code', 'Robert C. Martin', '9780132350884', TRUE),
     ('Effective Java', 'Joshua Bloch', '9780134685991', TRUE),
     ('Design Patterns', 'Gamma et al.', '9780201633610', TRUE);
+
+-- Zugang für die Java-Anwendung (für lokale Starts und Docker).
+CREATE USER IF NOT EXISTS 'biblio_user'@'localhost' IDENTIFIED BY 'changeme';
+CREATE USER IF NOT EXISTS 'biblio_user'@'%' IDENTIFIED BY 'changeme';
+GRANT ALL PRIVILEGES ON bibliothek.* TO 'biblio_user'@'localhost';
+GRANT ALL PRIVILEGES ON bibliothek.* TO 'biblio_user'@'%';
+FLUSH PRIVILEGES;

@@ -11,12 +11,31 @@ import java.sql.SQLException;
  */
 public class DBConnection {
 
-    private static final String URL =
-            "jdbc:mysql://localhost:3306/bibliothek?useSSL=false&serverTimezone=UTC";
-    private static final String USER = "biblio_user";
-    private static final String PASSWORD = "changeme";
+    private static final String URL = envOrDefault(
+            "DB_URL", "jdbc:mysql://localhost:3306/bibliothek?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC");
+    private static final String USER = envOrDefault("DB_USER", "biblio_user");
+    private static final String PASSWORD = envOrDefault("DB_PASSWORD", "changeme");
+
+    private static String envOrDefault(String name, String defaultValue) {
+        String value = System.getenv(name);
+        return value == null || value.isBlank() ? defaultValue : value;
+    }
 
     public static Connection getConnection() throws SQLException {
-        return DriverManager.getConnection(URL, USER, PASSWORD);
+        SQLException lastException = null;
+        for (int attempt = 1; attempt <= 30; attempt++) {
+            try {
+                return DriverManager.getConnection(URL, USER, PASSWORD);
+            } catch (SQLException exception) {
+                lastException = exception;
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException interruptedException) {
+                    Thread.currentThread().interrupt();
+                    throw exception;
+                }
+            }
+        }
+        throw lastException;
     }
 }
