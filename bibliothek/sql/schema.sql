@@ -3,10 +3,10 @@
 -- M450 LB2 – Integrationstesting
 -- ============================================================
 
-CREATE DATABASE IF NOT EXISTS bibliothek
-    CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
-
-USE bibliothek;
+-- CREATE DATABASE IF NOT EXISTS bibliothek
+--     CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+--
+-- USE bibliothek;
 
 -- ------------------------------------------------------------
 -- Tabelle: mitglied
