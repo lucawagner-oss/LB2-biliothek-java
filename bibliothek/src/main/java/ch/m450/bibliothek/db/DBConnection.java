@@ -12,7 +12,7 @@ import java.sql.SQLException;
 public class DBConnection {
 
     private static final String URL =
-            "jdbc:mysql://localhost:3306/bibliothek?useSSL=false&serverTimezone=UTC";
+            "jdbc:mysql://localhost:3306/bibliothek?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC";
     private static final String USER = "biblio_user";
     private static final String PASSWORD = "changeme";
 
